@@ -1,52 +1,72 @@
 #include <iostream>
 using namespace std;
 
-#define PI 3.14
+const float PI = 3.14; //圆周率
 
-class Round
+//设计圆类
+class round
 {
 public:
-    Round()
+    round()
     {
-        radius = 10;
+        cout << "round默认构造函数" << endl;
+    }
+
+    round(float r)
+    {
+        this->m_R = r;
     }
 
     float get_area()
     {
-        return radius * radius * PI;
+        return PI * m_R * m_R;
     }
 
-    int radius;
+    float m_R; //半径
 };
 
-class Table
+//设计桌子类
+class table
 {
 public:
-    Table()
+    table()
     {
-        high = 0.8;
-        color = "black";
+        cout << "table的默认构造函数" << endl;
     }
 
-    float high;
-    string color;
+    table(float height, string color)
+    {
+        this->m_Height = height;
+        this->m_Color = color;
+    }
+
+    float m_Height;
+    string m_Color;
 };
 
-class Round_Table : public Round, public Table
+//设计圆桌类
+class roundtable : public table, public round
 {
 public:
-    void display()
+    roundtable(float r, float h, string c)
     {
-        cout << get_area() << "\n"
-             << high << "\n"
-             << color << endl;
+        this->m_R = r;
+        this->m_Height = h;
+        this->m_Color = c;
+    }
+
+    void show_info()
+    {
+        cout << "圆桌的面积:" << this->get_area() << endl;
+        cout << "圆桌的高度:" << this->m_Height << endl;
+        cout << "圆桌的颜色:" << this->m_Color << endl;
     }
 };
 
-int main(int argc, char const *argv[])
+int main()
 {
-    Round_Table arthur;
-    arthur.display();
+    roundtable rt(3.3, 7.6, "red");
+    rt.show_info();
 
     return 0;
 }

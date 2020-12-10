@@ -1,98 +1,138 @@
 #include <iostream>
 using namespace std;
 
-#define PI 3.14
+/*
+（考点：继承，运算符重载<<）
+先建立一个point类，包含数据成员x，y，以它为基类，派生出一个circle类，增加数据成员r，再以circle为直接类，派生出一个cylinder类，增加数据成员h。
+point得到x，y坐标
+circle可以设置半径，读取半径，计算圆面积
+cylinder可以设置圆柱的高，读取圆柱的高，计算圆柱的表面积，计算圆柱的体积
+每个类都定义一个对象，重载运算符“ <<”输出以上对象信息
+*/
 
+//设计点类
 class Point
 {
+    friend ostream &operator<<(ostream &cout, Point &p);
+
 public:
-    void set_xy(int x, int y)
+    void setX(float value)
     {
-        this->x = x;
-        this->y = y;
+        x = value;
     }
 
-    int x;
-    int y;
+    void setY(float value)
+    {
+        y = value;
+    }
+
+    float getX()
+    {
+        return x;
+    }
+
+    float getY()
+    {
+        return y;
+    }
+
+private:
+    float x;
+    float y;
 };
 
 class Circle : public Point
 {
-protected:
-    int r;
+    friend ostream &operator<<(ostream &cout, Circle &c);
 
 public:
-    void set_r(int r)
+    float get_area()
     {
-        this->r = r;
+        return 3.14 * r * r;
     }
-    int get_r()
+
+    void setR(float radius)
+    {
+        r = radius;
+    }
+
+    float getR()
     {
         return r;
     }
-    float get_area()
-    {
-        return r * r * PI;
-    }
+
+private:
+    float r;
 };
 
 class Cylinder : public Circle
 {
-protected:
-    int h;
+    friend ostream &operator<<(ostream &cout, Cylinder &cy);
 
 public:
-    void set_h(int h)
+    void setH(float height)
     {
-        this->h = h;
+        h = height;
     }
-    int get_h()
+
+    float getH()
     {
         return h;
     }
-    float get_surface_area()
+
+    float getCylinderS()
     {
-        return 2 * r * PI * h + 2 * get_area();
+        float R = getR();
+        return 3.14 * R * R * 2 + 2 * 3.14 * R * h;
     }
-    float get_()
+
+    float getCylinderV()
     {
-        return get_area() * h;
+        float R = getR();
+        return 3.14 * R * R * h;
     }
+
+private:
+    float h;
 };
 
-//重载<<运算符
-ostream &operator<<(ostream &cout, Point p)
+ostream &operator<<(ostream &cout, Cylinder &cy)
 {
-    cout << p.x << "," << p.y;
+    cout << "x = " << cy.getX() << " y = " << cy.getY() << " r = " << cy.getR() << " h = " << cy.h << " s = " << cy.getCylinderS() << " v = " << cy.getCylinderV();
     return cout;
 }
 
-//重载<<运算符
-ostream &operator<<(ostream &cout, Circle o)
+ostream &operator<<(ostream &cout, Circle &c)
 {
-    cout << o.get_r() << " " << o.get_area() << " " << o.x << "," << o.y;
+    cout << "x = " << c.getX() << " y = " << c.getY() << " r = " << c.getR() << " s = " << c.get_area();
     return cout;
 }
 
-//重载<<运算符
-ostream &operator<<(ostream &cout, Cylinder c)
+ostream &operator<<(ostream &cout, Point &p)
 {
-    cout << c.get_h() << " " << c.get_surface_area() << " " << c.x << "," << c.y;
+    cout << "x = " << p.x << " y = " << p.y;
     return cout;
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
     Point p;
-    Circle o;
-    Cylinder c;
-    p.set_xy(6, 9);
-    o.set_r(4);
-    c.set_r(3);
-    c.set_h(6);
-    cout << p << "\n"
-         << o << "\n"
-         << c << endl;
+    p.setX(1);
+    p.setY(2.1);
+    cout << p << endl;
+
+    Circle c;
+    c.setR(10);
+    c.setX(5);
+    c.setY(9);
+    cout << c << endl;
+
+    Cylinder cy;
+    cy.setR(10);
+    cy.setX(10);
+    cy.setY(10);
+    cy.setH(10);
+    cout << cy << endl;
 
     return 0;
 }
