@@ -1,41 +1,74 @@
 #include <iostream>
 using namespace std;
 
-template <class T>
-void arr_sort(T arr[], int len)
-{
-    int i, j;
-    T temp;
-    for (i = 0; i < len - 1; i++)
-    {
-        for (j = i + 1; j < len; j++)
-        {
-            if (arr[i] < arr[j])
-            {
-                temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
-        }
-    }
+//实现通用数组进行排序的函数
+//规则: 从大到小
+//算法: 选择
+//测试: char数组和int数组
 
-    for (i = 0; i < len; i++)
-        cout << arr[i] << endl;
+template <class T>
+void mySwap(T &a, T &b)
+{
+	T temp = a;
+	a = b;
+	b = temp;
 }
 
-int main(int argc, char const *argv[])
+template <class T>
+void mySort(T arr[], int len)
 {
-    int len1, len2;
+	int i, j;
+	for (i = 0; i < len - 1; i++)
+	{
+		for (j = i + 1; j < len; j++)
+		{
+			if (arr[i] < arr[j])
+			{
+				mySwap(arr[i], arr[j]);
+			}
+		}
+	}
+}
 
-    char arr1[] = "BECADF";
-    len1 = sizeof(arr1) - 1;
+template <class T>
+void printArray(T arr[], int len)
+{
+	int i;
+	for (i = 0; i < len; i++)
+	{
+		cout << arr[i] << "  ";
+	}
+	cout << endl;
+}
 
-    int arr2[] = {6, 9, 5, 7, 3, 0, 4, 8};
-    len2 = sizeof(arr2) / sizeof(arr2[0]);
+//char数组
+void test01()
+{
+	//测试char数组
+	char charArr[] = "badcfe";
+	int num = sizeof(charArr) / sizeof(char);
 
-    arr_sort(arr1, len1);
-    cout << "-----------------" << endl;
-    arr_sort(arr2, len2);
+	mySort(charArr, num);
 
-    return 0;
+	printArray(charArr, num);
+}
+
+//int数组
+void test02()
+{
+	//测试int数组
+	int intArr[] = {7, 5, 1, 3, 9, 2, 4, 6, 8};
+	int num = sizeof(intArr) / sizeof(int);
+
+	mySort(intArr, num);
+
+	printArray(intArr, num);
+}
+
+int main()
+{
+	test01();
+	test02();
+
+	return 0;
 }
